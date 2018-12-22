@@ -1,0 +1,27 @@
+{
+	"editor.dragAndDrop": false,
+	"editor.emptySelectionClipboard": false,
+	"editor.formatOnSave": true,
+	"editor.mouseWheelZoom": true,
+	"editor.multiCursorModifier": "ctrlCmd",
+	"editor.occurrencesHighlight": false,
+	"editor.renderWhitespace": "none",
+	"editor.smoothScrolling": true,
+	"explorer.confirmDelete": false,
+	"explorer.confirmDragAndDrop": false,
+	"files.associations": {
+		"*.html": "gohtml"
+	},
+	"files.trimFinalNewlines": true,
+	"files.trimTrailingWhitespace": true,
+	"go.formatTool": "goimports",
+	"go.useCodeSnippetsOnFunctionSuggest": true,
+	"update.channel": "none",
+	"workbench.colorTheme": "Twilight",
+	"workbench.startupEditor": "none",
+	"window.zoomLevel": 0,
+	"terminal.integrated.rendererType": "dom",
+	"terminal.integrated.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.largeFileOptimizations": false,
+}
