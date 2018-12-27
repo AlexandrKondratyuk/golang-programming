@@ -16,7 +16,8 @@ type User struct {
 }
 
 func main() {
-	userMain := &User{"? Guest Name", "? Guest LastNane", "? Guest Age"}
+	userMain := &User{"undefined Name", "undefined LastNane", "undefined Age"}
+	// myCash := new(Cash)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
@@ -36,10 +37,24 @@ func main() {
 				userMain.setAge(strings.Join(v, ""))
 			}
 		}
+	})
+	http.HandleFunc("/logon", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm() //анализ аргументов,
 
-		fmt.Fprintf(w, "Your name is %s! \n", userMain.Name)
-		fmt.Fprintf(w, "Your surname is  %s \n", userMain.Lastname)
-		fmt.Fprintf(w, "You are %s years old \n", userMain.Age)
+		for k, v := range r.Form {
+			switch k {
+			case "name":
+				userMain.setName(strings.Join(v, ""))
+			case "lastname":
+				userMain.setLastName(strings.Join(v, ""))
+			case "age":
+				userMain.setAge(strings.Join(v, ""))
+			}
+		}
+
+		fmt.Fprintf(w, "You registered name => %s! \n", userMain.Name)
+		fmt.Fprintf(w, "You registered lastname => %s \n", userMain.Lastname)
+		fmt.Fprintf(w, "You registered age => %s \n", userMain.Age)
 	})
 
 	err := http.ListenAndServe(":3000", nil) // задаем слушать порт
@@ -59,4 +74,14 @@ func (user *User) setLastName(lastname string) {
 
 func (user *User) setAge(age string) {
 	user.Age = age
+}
+
+type Cash struct {
+	Users map[string]User
+}
+
+var mapUsers map[string]User = make(map[string]User)
+
+func (cash *Cash) SetCash(login string, user *User) {
+	(*cash).Users[login] = *user
 }

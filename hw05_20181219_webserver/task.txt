@@ -26,3 +26,12 @@ Interface values are comparable. Two interface values are equal if they have ide
 A value x of non-interface type X and a value t of interface type T are comparable when values of type X are comparable and X implements T. They are equal if t's dynamic type is identical to X and t's dynamic value is equal to x.
 Struct values are comparable if all their fields are comparable. Two struct values are equal if their corresponding non-blank fields are equal.
 Array values are comparable if values of the array element type are comparable. Two array values are equal if their corresponding elements are equal.
+Добавить пути в свой веб сервер.
+1. Для регистрации
+2. Для авторизации
+3. Страницу контент которой будет зависить от того авторизован ли пользователь.
+Данные берутся из параметров урла.
+Желательно что бы были редиректы на регистрацию и авторизацию.
+Создать тип ( например cache) в котором будет лежать ваше хранилище пользователей.
+Общение с ним должно проводиться с помощью методов этого типа.
+Желательно разделить на разные файлы логику сервера и хранилища.

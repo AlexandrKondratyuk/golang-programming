@@ -1,0 +1,4 @@
+Дз:
+1 повторить теорию по основам.
+2 создать типы cacheMap, cacheSlice
+3 написать для них  методы : check, get by index, add, update, delete.
