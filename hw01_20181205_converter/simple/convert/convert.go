@@ -1,7 +1,6 @@
 package convert
 
 import (
-	"reflect"
 	"fmt"
 	"strconv"
 )
@@ -135,8 +134,4 @@ func BoolToUint(value bool) (result uint) {
 func BoolToString(value bool) (result string) {
 	result = fmt.Sprintf("%t", value)
 	return result
-}
-
-func String(args interface{}) string {
-	return ""
 }

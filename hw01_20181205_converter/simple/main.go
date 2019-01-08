@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"homework/hw01_20181205/simple/convert"
-	"reflect"
+	"homework/hw01_20181205_converter/simple/convert"
 )
 
 func main() {
@@ -69,8 +68,6 @@ func main() {
 	resBoolToString := convert.BoolToString(false)
 	fmt.Printf("Type of value: %T, value: %s\n", resBoolToString, resBoolToString)
 
-	fmt.Println(String(3.4))
-
-
 	fmt.Println("Finished Go converter")
+
 }
