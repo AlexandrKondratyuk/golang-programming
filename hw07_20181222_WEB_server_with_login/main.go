@@ -87,7 +87,7 @@ func Logon(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("path", r.URL.Path)
 	fmt.Println("method:", r.Method) //get request method
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("login.html")
+		t, _ := template.ParseFiles("logon.html")
 		t.Execute(w, nil)
 	} else {
 		r.ParseForm()
@@ -95,12 +95,43 @@ func Logon(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("username:", r.Form["username"])
 		fmt.Println("password:", r.Form["password"])
 
-		passFromMap, ok := Users[r.Form["username"][0]]
-		passFromForm := Users[r.Form["password"][0]]
-		if ok && passFromForm == passFromMap {
-			http.Redirect(w, r, "/welcome", http.StatusFound)
+		_, ok := Users[r.Form["username"][0]]
+		//passFromMap, ok := Users[r.Form["username"][0]]
+		//passFromForm := Users[r.Form["password"][0]]
+
+		if ok {
+			fmt.Fprintf(w, `<html>
+            <head>
+            </head>
+            <body>
+			<script>
+				alert('This login is already in use. Try another!')
+			</script>            
+            </script>
+            </body>
+            </html>`)
+
+			t, _ := template.ParseFiles("logon.html")
+			t.Execute(w, nil)
 		} else {
-			http.Redirect(w, r, "/", http.StatusFound)
+			r.ParseForm()
+			login, pass := r.Form["username"][0],r.Form["password"][0]
+			Users[login] = User{login, pass}
+			fmt.Println("New Users map ==>", Users)
+
+			fmt.Fprintf(w, `<html>
+            <head>
+            </head>
+            <body>
+			<script>
+				alert('Your data saved seccessfully!')
+			</script>            
+            </script>
+            </body>
+            </html>`)
+
+			t, _ := template.ParseFiles("login.html")
+			t.Execute(w, nil)
 		}
 	}
 	fmt.Println("******************************End LOGIN")
