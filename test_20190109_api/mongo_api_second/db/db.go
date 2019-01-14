@@ -6,11 +6,8 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-//User and Group represents database entities.
 type User struct {
-	ID    string `json:"id" bson:"_id,omitempty"`
-	//ID    bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Login string    `json:"login" bson:"login"`
+	Login string    `json:"_id" bson:"_id"`
 	Pass string    `json:"pass" bson:"pass"`
 	Age int    `json:"age" bson:"age"`
 }
@@ -44,10 +41,23 @@ func SaveUser(user User) error {
 }
 
 // Remove an item from the database
-func RemoveUser(id bson.ObjectId) error {
-	return collectionUsers().Remove(bson.M{"_id": id})
+func RemoveUser(id string) error {
+	return collectionUsers().RemoveId(id)
 }
 
+// GetOne returns a single item from the database.
+func GetOneUser(id string) (*User, error) {
+	//res2 := collectionUsers().FindId(id)
+	//fmt.Println("res ", res2)
+	//fmt.Printf("type of res = %T ", res2)
+	res := User{}
+
+	if err := collectionUsers().Find(id).One(&res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
 
 //TODO +++
 
@@ -77,16 +87,7 @@ func GetAllGroups() ([]Group, error) {
 	return res, nil
 }
 
-// GetOne returns a single item from the database.
-func GetOneUser(id string) (*User, error) {
-	res := User{}
 
-	if err := collectionUsers().Find(bson.M{"_id": id}).One(&res); err != nil {
-		return nil, err
-	}
-
-	return &res, nil
-}
 
 func GetOneGroup(id string) (*Group, error) {
 	res := Group{}

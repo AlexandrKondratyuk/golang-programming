@@ -9,6 +9,8 @@ import (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/api/user/all", api.GetAllUsers).Methods("GET")
+
+
 	r.HandleFunc("/api/user/create", api.AddUser).Methods("GET")   //todo ID into normal represantation
 	r.HandleFunc("/api/user/delete", api.DeleteUser).Methods("GET") //todo
 	r.HandleFunc("/api/user/get", api.GetUser).Methods("GET")   //todo

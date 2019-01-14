@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/mux"
 	"strconv"
 	"homework/test_20190109_api/mongo_api_second/db"
-	"gopkg.in/mgo.v2/bson"
 )
 
 func handleError(err error, message string, w http.ResponseWriter) {
@@ -34,8 +33,7 @@ func GetAllUsers(w http.ResponseWriter, req *http.Request){
 
 // Add one user (form data) into the database
 func AddUser(w http.ResponseWriter, req *http.Request) {
-	ID := req.FormValue("id")
-	//ID := bson.NewObjectId()
+	//ID := req.FormValue("id")
 	//ID := string(bson.NewObjectId())
 	login := req.FormValue("login")
 	pass := req.FormValue("pass")
@@ -46,24 +44,33 @@ func AddUser(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	user := db.User{ID: ID, Login: login, Pass: pass, Age: age}
+	user := db.User{ Login: login, Pass: pass, Age: age}
 
 	if err = db.SaveUser(user); err != nil {
 		handleError(err, "Failed to save data: %v", w)
 		return
 	}
 
-	bs, _ := json.Marshal(user.ID)
-	w.Write([]byte(bs)) //TODO return json formatted ID
+	//bs, _ := json.Marshal(user.ID)
+	res := user.Login
+	w.Write([]byte(res)) //TODO return json formatted ID
 }
 
 // Removes a single item (identified by id) from the database.
 func DeleteUser(w http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id := bson.ObjectId(vars["id"])
+	req.ParseForm()
+	var login string
+	if _, ok := req.Form["login"]; ok {
+		login = req.Form["login"][0]
+	}
+
+	//vars := mux.Vars(req)
+	id := login
+
+	fmt.Println("id = ", id)
 
 	if err := db.RemoveUser(id); err != nil {
-		handleError(err, "Failed to remove user: %v", w)
+		handleError(err, "Failed to remove user: %v\n", w)
 		w.Write([]byte("OK: false"))
 		return
 	}
@@ -91,10 +98,16 @@ func GetAllGroups(w http.ResponseWriter, req *http.Request) {
 
 // GetItem returns a single database item matching given ID parameter.
 func GetUser(w http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id := vars["id"]
+	req.ParseForm()
+	var login string
+	if _, ok := req.Form["login"]; ok {
+		login = req.Form["login"][0]
+	}
+	id := login
+	fmt.Println("Value of Id = ")
 
 	rs, err := db.GetOneUser(id)
+	fmt.Println("rs = ",rs)
 	if err != nil {
 		handleError(err, "Failed to read database: %v", w)
 		return
