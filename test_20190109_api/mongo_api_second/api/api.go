@@ -311,3 +311,39 @@ func CopyUsersFromGroup(w http.ResponseWriter, req *http.Request) { // copy user
 	}
 	w.Write([]byte("OK: true"))
 }
+
+func DeleteUsersFromGroup(w http.ResponseWriter, req *http.Request) { // delete users from first grope if users are in second group(by group id)
+	req.ParseForm()
+	groupNameForDel := req.Form["groupName1"][0]
+	groupNameToCompare := req.Form["groupName2"][0]
+
+	groupForDel, err1 := db.GetOneGroup(groupNameForDel)
+	groupToCompare, err2 := db.GetOneGroup(groupNameToCompare)
+
+	if err1 != nil {
+		handleError(err1, "Failed to read database 'groups': %v", w)
+		return
+	}
+	if err2 != nil {
+		handleError(err2, "Failed to read database 'users': %v", w)
+		return
+	}
+
+	var user db.User
+	for _, userFrom := range groupToCompare.Users {
+		for _, userToDel := range groupForDel.Users {
+			if userFrom.Login == userToDel.Login {
+				user, _ := db.GetOneUser(userToDel.Login)
+
+				if err := db.DeleteUserFromGroup(groupNameForDel, user); err != nil {
+					handleError(err, "Failed to delete user from group", w)
+					w.Write([]byte("OK: false"))
+					return
+				}
+				break
+			}
+		}
+	}
+	fmt.Println(user)
+	w.Write([]byte("OK: true"))
+}
