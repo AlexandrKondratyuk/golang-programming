@@ -3,7 +3,6 @@ package db
 import (
 	"log"
 	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"fmt"
 )
 
@@ -13,7 +12,7 @@ type User struct {
 	Age   int    `json:"age" bson:"age"`
 }
 
-var DBusers, DBgroups *mgo.Database
+var DBusers *mgo.Database
 
 func init() {
 	fmt.Println("start func Init()")
@@ -23,7 +22,7 @@ func init() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	DBusers, DBgroups = session.DB("users"), session.DB("groups")
+	DBusers = session.DB("users")
 }
 
 func collectionUsers() *mgo.Collection {
@@ -65,47 +64,4 @@ func FindIdByLogin(id string) (*User, error) {  // get user's ID by login from D
 	}
 
 	return &res, nil
-}
-
-
-
-
-///////////////////
-
-
-type Group struct {
-	ID    string `json:"id" bson:"_id,omitempty"`
-	Value int    `json:"value"`
-}
-
-func collectionGroups() *mgo.Collection {
-	return DBgroups.C("groups")
-}
-
-func GetAllGroups() ([]Group, error) {
-	res := []Group{}
-
-	if err := collectionUsers().Find(nil).All(&res); err != nil {
-		return nil, err
-	}
-
-	return res, nil
-}
-
-func GetOneGroup(id string) (*Group, error) {
-	res := Group{}
-
-	if err := collectionGroups().Find(bson.M{"_id": id}).One(&res); err != nil {
-		return nil, err
-	}
-
-	return &res, nil
-}
-
-func SaveGroup(group Group) error {
-	return collectionGroups().Insert(group)
-}
-
-func RemoveGroup(id string) error {
-	return collectionGroups().Remove(bson.M{"_id": id})
 }

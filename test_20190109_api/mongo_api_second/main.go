@@ -17,14 +17,10 @@ func main() {
 
 	r.HandleFunc("/api/group/all", api.GetAllGroups).Methods("GET")
 	r.HandleFunc("/api/group/create", api.AddGroup).Methods("GET")
+	r.HandleFunc("/api/group/delete", api.DeleteGroup).Methods("GET")
+	r.HandleFunc("/api/group/get", api.GetGroup).Methods("GET")
+	r.HandleFunc("/api/group/addUser", api.AddUserToGroup).Methods("GET")
+	r.HandleFunc("/api/group/getUsers", api.GetUsersFromGroup).Methods("GET")
 
 	http.ListenAndServe(":4000", r)
-
-
-
-
-	//////////////////////////
-	r.HandleFunc("/api/group/get", api.GetGroup).Methods("GET")  //todo
-	r.HandleFunc("/api/group/delete", api.DeleteGroup).Methods("GET") //todo
-
 }
