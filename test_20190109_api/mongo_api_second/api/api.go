@@ -255,28 +255,59 @@ func DeleteUserFromGroup(w http.ResponseWriter, req *http.Request) { // delete u
 	groupName := req.Form["groupName"][0]
 	login := req.Form["login"][0]
 
-	//group, errG := db.GetOneGroup(groupName)
 	user, _ := db.GetOneUser(login)
-	//if errG != nil {
-	//	handleError(errG, "Failed to read database 'groups': %v", w)
-	//	return
-	//}
-	//if errU != nil {
-	//	handleError(errU, "Failed to read database 'users': %v", w)
-	//	return
-	//}
-	//
-	//userExists := false
-	//for _, res := range group.Users {
-	//	if res.Login == login {
-	//		userExists = true
-	//	}
-	//}
 
 	if err := db.DeleteUserFromGroup(groupName, user); err != nil {
 		handleError(err, "Failed to save group: %v into db groups", w)
 		w.Write([]byte("OK: false"))
 		return
+	}
+	w.Write([]byte("OK: true"))
+}
+
+func CopyUsersFromGroup(w http.ResponseWriter, req *http.Request) { // copy users from one group to another (by IDs)
+	req.ParseForm()
+	groupNameTo := req.Form["groupNameTo"][0]
+	groupNameFrom := req.Form["groupNameFrom"][0]
+
+	groupTo, err1 := db.GetOneGroup(groupNameTo)
+	groupFrom, err2 := db.GetOneGroup(groupNameFrom)
+
+	if err1 != nil {
+		handleError(err1, "Failed to read database 'groups': %v", w)
+		return
+	}
+	if err2 != nil {
+		handleError(err2, "Failed to read database 'users': %v", w)
+		return
+	}
+
+	isEmpty := len(groupTo.Users) == 0
+	for _, resFrom := range groupFrom.Users {
+		if isEmpty {
+			user, _ := db.GetOneUser(resFrom.Login)
+			if err := db.SaveUserIntoGroup(groupNameTo, user); err != nil {
+				handleError(err, "Failed to save user: %v into db", w)
+				w.Write([]byte("OK: false"))
+				return
+			}
+		} else {
+			hasUser := false
+			for _, resTo := range groupTo.Users {
+				if resTo.Login == resFrom.Login {
+					hasUser = true
+					break
+				}
+			}
+			if !hasUser {
+				user, _ := db.GetOneUser(resFrom.Login)
+				if err := db.SaveUserIntoGroup(groupNameTo, user); err != nil {
+					handleError(err, "Failed to save user: %v into db", w)
+					w.Write([]byte("OK: false"))
+					return
+				}
+			}
+		}
 	}
 	w.Write([]byte("OK: true"))
 }
