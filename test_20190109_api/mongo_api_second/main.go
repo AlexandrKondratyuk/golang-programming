@@ -21,6 +21,7 @@ func main() {
 	r.HandleFunc("/api/group/get", api.GetGroup).Methods("GET")
 	r.HandleFunc("/api/group/addUser", api.AddUserToGroup).Methods("GET")
 	r.HandleFunc("/api/group/getUsers", api.GetUsersFromGroup).Methods("GET")
+	r.HandleFunc("/api/group/deleteUser", api.DeleteUserFromGroup).Methods("GET")
 
 	http.ListenAndServe(":4000", r)
 }

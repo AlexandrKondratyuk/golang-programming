@@ -249,3 +249,34 @@ func GetUsersFromGroup(w http.ResponseWriter, req *http.Request) { // add user (
 	}
 	w.Write(bs)
 }
+
+func DeleteUserFromGroup(w http.ResponseWriter, req *http.Request) { // delete user (by ID) from group (by id)
+	req.ParseForm()
+	groupName := req.Form["groupName"][0]
+	login := req.Form["login"][0]
+
+	//group, errG := db.GetOneGroup(groupName)
+	user, _ := db.GetOneUser(login)
+	//if errG != nil {
+	//	handleError(errG, "Failed to read database 'groups': %v", w)
+	//	return
+	//}
+	//if errU != nil {
+	//	handleError(errU, "Failed to read database 'users': %v", w)
+	//	return
+	//}
+	//
+	//userExists := false
+	//for _, res := range group.Users {
+	//	if res.Login == login {
+	//		userExists = true
+	//	}
+	//}
+
+	if err := db.DeleteUserFromGroup(groupName, user); err != nil {
+		handleError(err, "Failed to save group: %v into db groups", w)
+		w.Write([]byte("OK: false"))
+		return
+	}
+	w.Write([]byte("OK: true"))
+}

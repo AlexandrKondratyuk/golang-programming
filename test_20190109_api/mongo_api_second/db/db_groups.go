@@ -69,3 +69,15 @@ func SaveUserIntoGroup(id string, user *User) error {
 	err = collectionGroups().UpdateId(id,update)
 	return err
 }
+
+func DeleteUserFromGroup(id string, user *User) error {
+	res := Group{}
+	err := collectionGroups().Find(bson.M{"_id": id}).One(&res)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	update := bson.M{"$pull": bson.M{"users": user}}
+	err = collectionGroups().UpdateId(id,update)
+	return err
+}
