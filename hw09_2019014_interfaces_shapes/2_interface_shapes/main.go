@@ -60,6 +60,6 @@ func (cir Circle) String() string {
 
 func describe(shape Shapes) {
 	fmt.Printf("%v \n", shape)
-	fmt.Printf("Perimeter = %v \n", shape.getPerimeter())
-	fmt.Printf("Area = %v \n ********** \n", shape.getArea())
+	fmt.Printf("Perimeter = %.2f \n", shape.getPerimeter())
+	fmt.Printf("Area = %.2f \n ********** \n", shape.getArea())
 }
