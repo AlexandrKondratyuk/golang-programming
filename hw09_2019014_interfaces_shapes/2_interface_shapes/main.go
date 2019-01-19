@@ -50,8 +50,8 @@ func (r *Rectangle) getArea() float64 {
 	return float64(r.height * r.lenght)
 }
 
-func (rec *Rectangle) String() string {
-	return fmt.Sprintf("%v (h = %v, l = %v)", rec.Type, rec.height, rec.lenght)
+func (r *Rectangle) String() string {
+	return fmt.Sprintf("%v (h = %v, l = %v)", r.Type, r.height, r.lenght)
 }
 
 func (c *Circle) getPerimeter() float64 {
@@ -62,8 +62,8 @@ func (c *Circle) getArea() float64 {
 	return math.Pi * math.Pow(c.radius, 2)
 }
 
-func (cir *Circle) String() string {
-	return fmt.Sprintf("%v (r = %v)", cir.Type, cir.radius)
+func (c *Circle) String() string {
+	return fmt.Sprintf("%v (r = %v)", c.Type, c.radius)
 }
 
 func (t *Triangle) getPerimeter() float64 {
