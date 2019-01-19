@@ -19,9 +19,9 @@ type (
 		Type   string
 	}
 	Triangle struct {
-		lineA float64
-		lineB float64
-		lineC float64
+		sideA float64
+		sideB float64
+		sideC float64
 		Type string
 	}
 )
@@ -67,17 +67,17 @@ func (c *Circle) String() string {
 }
 
 func (t *Triangle) getPerimeter() float64 {
-	return t.lineA+t.lineB+t.lineC
+	return t.sideA+t.sideB+t.sideC
 }
 
 func (t *Triangle) getArea() float64 {
 	halfPerim := t.getPerimeter()/2
-	res := math.Sqrt(halfPerim*(halfPerim-t.lineA)*(halfPerim-t.lineB)*(halfPerim-t.lineC))
+	res := math.Sqrt(halfPerim*(halfPerim-t.sideA)*(halfPerim-t.sideB)*(halfPerim-t.sideC))
 	return res
 }
 
 func (t *Triangle) String() string {
-	return fmt.Sprintf("%v (a = %v, b = %v, c = %v)", t.Type, t.lineA, t.lineB, t.lineC)
+	return fmt.Sprintf("%v (a = %v, b = %v, c = %v)", t.Type, t.sideA, t.sideB, t.sideC)
 }
 
 func describe(shape Shapes) {
