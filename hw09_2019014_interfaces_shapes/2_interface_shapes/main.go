@@ -71,7 +71,7 @@ func (t *Triangle) getPerimeter() float64 {
 }
 
 func (t *Triangle) getArea() float64 {
-	halfPerim := t.getPerimeter()
+	halfPerim := t.getPerimeter()/2
 	res := math.Sqrt(halfPerim*(halfPerim-t.lineA)*(halfPerim-t.lineB)*(halfPerim-t.lineC))
 	return res
 }
