@@ -85,7 +85,7 @@ func toStringHandler(i interface{}) (string, error) {
 	}
 }
 
-func toFloatHandler(i interface{}) (float64, error) {
+func toFloat64Handler(i interface{}) (float64, error) {
 	switch flo := i.(type) {
 	case float64:
 		return flo, nil
@@ -127,3 +127,47 @@ func toFloatHandler(i interface{}) (float64, error) {
 		return 0, fmt.Errorf("Error: can't convert type: %T of value: %#v to type 'float64' ", flo, flo)
 	}
 }
+
+func toFloat32Handler(i interface{}) (float32, error) {
+	switch flo := i.(type) {
+	case float64:
+		return float32(flo), nil
+	case float32:
+		return flo, nil
+	case int:
+		return float32(flo), nil
+	case int64:
+		return float32(flo), nil
+	case int32:
+		return float32(flo), nil
+	case int16:
+		return float32(flo), nil
+	case int8:
+		return float32(flo), nil
+	case uint:
+		return float32(flo), nil
+	case uint64:
+		return float32(flo), nil
+	case uint32:
+		return float32(flo), nil
+	case uint16:
+		return float32(flo), nil
+	case uint8:
+		return float32(flo), nil
+	case bool:
+		if flo {
+			return 1, nil
+		} else {
+			return 0, nil
+		}
+	case string:
+		if value, err := strconv.ParseFloat(flo, 32);  err != nil {
+			return 0, fmt.Errorf("Error: can't convert type: %T of value: %#v to type 'float32' ", flo, flo)
+		} else {
+			return float32(value), nil
+		}
+	default:
+		return 0, fmt.Errorf("Error: can't convert type: %T of value: %#v to type 'float32' ", flo, flo)
+	}
+}
+

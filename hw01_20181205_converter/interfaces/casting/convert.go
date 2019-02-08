@@ -9,5 +9,9 @@ func ToString(i interface{}) (string, error) {
 }
 
 func ToFloat64(i interface{}) (float64, error) {
-	return toFloatHandler(i)
+	return toFloat64Handler(i)
+}
+
+func ToFloat32(i interface{}) (float32, error) {
+	return toFloat32Handler(i)
 }

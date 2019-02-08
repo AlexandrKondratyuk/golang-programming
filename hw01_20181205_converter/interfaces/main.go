@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	. "homework/hw01_20181205_converter/interfaces/casting"
+)
+
 func main() {
 	// test BOOL
 	//b := true
@@ -15,5 +20,7 @@ func main() {
 	//fmt.Println(ToString(str))
 
 	//f := "2.3"
+	f := true
 	//fmt.Println(ToFloat64(f))
+	fmt.Println(ToFloat32(f))
 }
