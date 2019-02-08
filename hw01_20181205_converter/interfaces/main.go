@@ -6,9 +6,17 @@ import (
 )
 
 func main() {
-
+	// test BOOL
 	//b := true
 	//b := -2
-	b := "true"
-	fmt.Println(ToBool(b))
+	//b := "true"
+	//fmt.Println(ToBool(b))
+
+	// test STRING
+	//str := 2
+	//str := 2.2
+	//str := uint8(2)
+	str := true
+	fmt.Println(ToString(str))
+
 }
