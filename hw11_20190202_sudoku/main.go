@@ -32,18 +32,67 @@ func main() {
 	fmt.Println("sudoku before")
 	View(grid)
 
-	if CheckTask(grid) {    //  if task correct return solution, else error
-		fmt.Println(" \n sudoku after")
-		FindSolution(&grid, 0)
-		View(grid)
-	} else {
-		fmt.Println(" \n Task incorrect")
+	FindSolution(&grid, 0)
+	fmt.Println(" \n sudoku after")
+	View(grid)
+}
+
+// Logic : is correct task for finding solution. If incorrect - return 'false'
+func CheckTask(grid [][]string) error {
+
+	// CHECK - is correct values or no in vertical and horizontal rows
+	for i := range grid {
+		for j := range grid[i] {
+			if grid[i][j] != "." {
+				for k := 0; k < len(grid); k++ { // additional param 'k' to check with current value[i][j]
+					if grid[i][k] == grid[i][j] && j != k { // check horizontally
+						return fmt.Errorf("Error: Sudoku is incorrect and hasn't correct solution. Incorret when check horizontal line")
+					}
+					if grid[k][j] == grid[i][j] && i != k { // check vertically
+						return fmt.Errorf("Error: Sudoku is incorrect and hasn't correct solution. Incorret when check vertical line")
+					}
+				}
+			}
+		}
 	}
+
+	// CHECK - is correct values in every square 3*3
+	var val string // temp variable 'val' for comparing it with current value[i][j]
+
+	for r := 0; r < len(grid); r += 3 { // iterating through all square (9*9)
+		for c := 0; c < len(grid); c += 3 {
+
+			for i := r; i < r+3; i++ { // iterating through current square (3*3)
+				for j := c; j < c+3; j++ {
+					if grid[i][j] != "." {
+						val = grid[i][j] // var for checking with - has initial value [i][j]
+						//fmt.Println(val)
+						for a := r; a < r+3; a++ {
+							for b := c; b < c+3; b++ { // don't check if curent value == [i][j]
+								if a == i && b == j {
+									continue
+								}
+								if val == grid[a][b] { // false if current value == [i][j]
+									return fmt.Errorf("Error: Sudoku is incorrect and hasn't correct solution. Incorret when check square 3*3")
+								}
+								if a == r+2 && b == c+2 { // change 'val' to next value for checking
+									val = grid[a][b]
+								}
+								if val != grid[a][b] { // ??? test is needed
+									continue
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	return nil
 }
 
 // View : result to console
 func View(grid [][]string) {
-
 	for row := 0; row < 9; row++ {
 		fmt.Println(" ")
 		if row == 3 || row == 6 {
@@ -67,6 +116,11 @@ func View(grid [][]string) {
 
 // Logic : for recursive finding correct results
 func FindSolution(grid *[][]string, currentPosition int) bool {
+	if CheckTask(*grid) != nil {    //  if task correct return solution, else error
+		fmt.Println(" \n Task incorrect")
+		return false
+	}
+
 	var (
 		row, col, checkedInt int
 		checkedString        string
@@ -129,60 +183,6 @@ func CheckSquare(checkedString string, grid [][]string, row int, col int) bool {
 		for col = startFromCol; col < startFromCol+3; col++ {
 			if grid[row][col] == checkedString {
 				return false
-			}
-		}
-	}
-	return true
-}
-
-// Logic : is correct task for finding solution. If incorrect - return 'false'
-func CheckTask(grid [][]string) bool {
-
-	// CHECK - is correct values or no in vertical and horizontal rows
-	for i := range grid {
-		for j := range grid[i] {
-			if grid[i][j] != "." {
-				for k := 0; k < len(grid); k++ { // additional param 'k' to check with current value[i][j]
-					if grid[i][k] == grid[i][j] && j != k { // check horizontally
-						return false
-					}
-					if grid[k][j] == grid[i][j] && i != k { // check vertically
-						return false
-					}
-				}
-			}
-		}
-	}
-
-	// CHECK - is correct values in every square 3*3
-	var val string // temp variable 'val' for comparing it with current value[i][j]
-
-	for r := 0; r < len(grid); r += 3 { // iterating through all square (9*9)
-		for c := 0; c < len(grid); c += 3 {
-
-			for i := r; i < r+3; i++ { // iterating through current square (3*3)
-				for j := c; j < c+3; j++ {
-					if grid[i][j] != "." {
-						val = grid[i][j] // var for checking with - has initial value [i][j]
-						//fmt.Println(val)
-						for a := r; a < r+3; a++ {
-							for b := c; b < c+3; b++ { // don't check if curent value == [i][j]
-								if a == i && b == j {
-									continue
-								}
-								if val == grid[a][b] { // false if current value == [i][j]
-									return false
-								}
-								if a == r+2 && b == c+2 { // change 'val' to next value for checking
-									val = grid[a][b]
-								}
-								if val != grid[a][b] { // ??? test is needed
-									continue
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 	}
