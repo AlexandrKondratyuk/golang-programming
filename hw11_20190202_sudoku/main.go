@@ -6,28 +6,30 @@ import (
 
 func main() {
 
-	// part_1 ---> TEST finding solution from program
-	grid := make([][]string, 9)
-	grid[0] = []string{".", ".", ".", "1", "4", ".", ".", "2", "."}
-	grid[1] = []string{".", ".", "6", ".", ".", ".", ".", ".", "."}
-	grid[2] = []string{".", ".", ".", ".", ".", ".", ".", ".", "."}
-	grid[3] = []string{".", ".", "1", ".", ".", ".", ".", ".", "."}
-	grid[4] = []string{".", "6", "7", ".", ".", ".", ".", ".", "9"}
-	grid[5] = []string{".", ".", ".", ".", ".", ".", "8", "1", "."}
-	grid[6] = []string{".", "3", ".", ".", ".", ".", ".", ".", "6"}
-	grid[7] = []string{".", ".", ".", ".", ".", "7", ".", ".", "."}
-	grid[8] = []string{".", ".", ".", "5", ".", ".", ".", "7", "."}
+	// PART_1 ---> TEST finding solution from program
+	gridFromSlice := make([][]string, 9)
+	gridFromSlice[0] = []string{".", ".", ".", "1", "4", ".", ".", "2", "."}
+	gridFromSlice[1] = []string{".", ".", "6", ".", ".", ".", ".", ".", "."}
+	gridFromSlice[2] = []string{".", ".", ".", ".", ".", ".", ".", ".", "."}
+	gridFromSlice[3] = []string{".", ".", "1", ".", ".", ".", ".", ".", "."}
+	gridFromSlice[4] = []string{".", "6", "7", ".", ".", ".", ".", ".", "9"}
+	gridFromSlice[5] = []string{".", ".", ".", ".", ".", ".", "8", "1", "."}
+	gridFromSlice[6] = []string{".", "3", ".", ".", ".", ".", ".", ".", "6"}
+	gridFromSlice[7] = []string{".", ".", ".", ".", ".", "7", ".", ".", "."}
+	gridFromSlice[8] = []string{".", ".", ".", "5", ".", ".", ".", "7", "."}
 
 	fmt.Println("sudoku before")
-	View(grid)
+	View(gridFromSlice)
 
-	FindSolution(&grid, 0)
+	FindSolution(&gridFromSlice, 0)
 	fmt.Println(" \n sudoku after")
-	View(grid)
+	View(gridFromSlice)
 
-	// part_2 ---> TEST finding solution from file
-	grid3 := make([]string, 9)
-	grid3 = []string{
+
+
+	// PART_2 ---> TEST finding solution from file
+	gridFromFile := make([]string, 9)
+	gridFromFile = []string{
 		"3..6.....",
 		".758.23..",
 		"86.....94",
@@ -40,7 +42,7 @@ func main() {
 	}
 
 	createFile() // create file
-	writeFile(&grid3)  // write file from '[]string'
+	writeFile(&gridFromFile)  // write file from '[]string'
 	readFile()   // read data from file and save them to slice GridFromFile
 
 	fmt.Println("sudoku before")
@@ -49,5 +51,18 @@ func main() {
 	FindSolution(&GridFromFile, 0)
 	fmt.Println(" \n sudoku after")
 	View(GridFromFile)
+
+
+	// PART_3 ---> TEST finding solution from console
+	gridFromConsole := getSolutionFromConsole()
+
+	fmt.Println(gridFromConsole)
+	fmt.Println("sudoku before")
+	View(gridFromConsole)
+
+	FindSolution(&gridFromConsole, 0)
+	fmt.Println(" \n sudoku after")
+	View(gridFromConsole)
+
 
 }

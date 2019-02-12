@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var path = "test.txt"
+var path = "task.txt"
 var grid = make([][]string, 9)
 var GridFromFile = make([][]string, 9)
 
@@ -42,16 +42,17 @@ func writeFile(data *[]string) {
 		}
 	}
 
-	// Save file changes.
+	// Save file changes - flushing the file system's in-memory copy
 	err = file.Sync()
 	if isError(err) {
 		return
 	}
 
 	fmt.Println("File Updated Successfully.")
+	return
 }
 
-func readFile() {
+func readFile(){
 	// Open file for reading.
 	var file, err = os.OpenFile(path, os.O_RDWR, 0644)
 	if isError(err) {
@@ -68,19 +69,16 @@ func readFile() {
 		if err == io.EOF {
 			break
 		}
-
 		// Break if error occured
 		if err != nil && err != io.EOF {
 			isError(err)
 			break
 		}
-
 	}
 
 	fmt.Println("Reading from file.")
-	//fmt.Println(string(text))
 
-	//write data from file into new slice 'gridFromFIle'
+	//write data from file into new slice 'GridFromFile'
 	for i:= 0; i < 9; i++ {
 		GridFromFile[i] = make([]string, 9)
 	}
@@ -89,8 +87,9 @@ func readFile() {
 	}
 
 	fmt.Println("Reading from slice what read from file.")
-	//fmt.Println(GridFromFile)
+	fmt.Println(GridFromFile)
 
+	return
 }
 
 func deleteFile() {
