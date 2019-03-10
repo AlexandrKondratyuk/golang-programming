@@ -17,12 +17,21 @@ func main() {
 	//fmt.Println(f)
 
 	rdr := csv.NewReader(f)
+	rdr.Comma = '\t'
+	fmt.Println(rdr.TrimLeadingSpace)
+	rdr.TrimLeadingSpace = true
+	fmt.Println(rdr.TrimLeadingSpace)
 	rows, err := rdr.ReadAll()
 	if err != nil {
 		panic(err)
 	}
 
-	for _, row := range rows {
-		fmt.Println(row)
+	for i, row := range rows {
+		fmt.Println(i, row)
+		if i == 1 {
+			fmt.Printf("%T %T %T \n",row[1],row[2],row[7])
+			fmt.Printf("%#v %#v %#v \n",row[1],row[2],row[7])
+			break
+		}
 	}
 }
