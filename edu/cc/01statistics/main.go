@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
 	"strconv"
 )
@@ -21,18 +22,15 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+}
 
-	var atTotal, bmTotal, wsTotal, counter float64
-
+func mean(rows [][]string, idx int) float64 {
+	var total float64
 	for i, row := range rows {
 		if i != 0 {
-			at, _ := strconv.ParseFloat(row[1], 64)
-			bm, _ := strconv.ParseFloat(row[2], 64)
-			ws, _ := strconv.ParseFloat(row[7], 64)
-			atTotal += at
-			bmTotal += bm
-			wsTotal += ws
-			counter++
+			val, _ := strconv.ParseFloat(row[idx], 64)
+			total += val
 		}
 	}
+	return total / float64(len(rows)-1)
 }
