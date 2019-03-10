@@ -1,28 +1,27 @@
 package main
 
 import (
-	"encoding/csv"
 	"fmt"
-	"os"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"sort"
 	"strconv"
 )
 
 func main() {
-	f, err := os.Open("Environmental_Data_Deep_Moor_2015.txt")
+	//res, err := http.Get("Environmental_Data_Deep_Moor_2015.txt")
+	res, err := http.Get("http://www.lynda.com/")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
+	}
+	page, err := ioutil.ReadAll(res.Body)
+	res.Body.Close()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	defer f.Close()
-
-	rdr := csv.NewReader(f)
-	rdr.Comma = '\t'
-	rdr.TrimLeadingSpace = true
-	rows, err := rdr.ReadAll()
-	if err != nil {
-		panic(err)
-	}
+	fmt.Printf("%s", page)
 }
 
 func mean(rows [][]string, idx int) float64 {
