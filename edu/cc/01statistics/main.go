@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -33,4 +34,26 @@ func mean(rows [][]string, idx int) float64 {
 		}
 	}
 	return total / float64(len(rows)-1)
+}
+
+func median(rows [][]string, idx int) float64 {
+	var sorted []float64
+	for i, row := range rows {
+		if i != 0 {
+			val, _ := strconv.ParseFloat(row[idx], 64)
+			sorted = append(sorted, val)
+		}
+	}
+
+	sort.Float64s(sorted)
+
+	if len(rows)%2 == 0 {
+		middle := len(sorted) / 2
+		lower := sorted[middle-1]
+		higher := sorted[middle]
+		return (lower + higher) / 2
+	}
+
+	middle := len(sorted) / 2
+	return sorted[middle]
 }
