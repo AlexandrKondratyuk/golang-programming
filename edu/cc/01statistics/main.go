@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func main() {
@@ -14,24 +15,20 @@ func main() {
 
 	defer f.Close()
 
-	//fmt.Println(f)
-
 	rdr := csv.NewReader(f)
 	rdr.Comma = '\t'
-	fmt.Println(rdr.TrimLeadingSpace)
 	rdr.TrimLeadingSpace = true
-	fmt.Println(rdr.TrimLeadingSpace)
 	rows, err := rdr.ReadAll()
 	if err != nil {
 		panic(err)
 	}
 
 	for i, row := range rows {
-		fmt.Println(i, row)
-		if i == 1 {
-			fmt.Printf("%T %T %T \n",row[1],row[2],row[7])
-			fmt.Printf("%#v %#v %#v \n",row[1],row[2],row[7])
-			break
+		if i != 0 && i < 10 {
+			at, _ := strconv.ParseFloat(row[1], 64)
+			bm, _ := strconv.ParseFloat(row[2], 64)
+			ws, _ := strconv.ParseFloat(row[7], 64)
+			fmt.Printf("%T %T %T \n",at, bm, ws)
 		}
 	}
 }
