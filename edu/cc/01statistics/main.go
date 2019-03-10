@@ -1,8 +1,8 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"sort"
@@ -11,17 +11,24 @@ import (
 
 func main() {
 	//res, err := http.Get("Environmental_Data_Deep_Moor_2015.txt")
-	res, err := http.Get("http://www.lynda.com/")
+	res, err := http.Get("https://lpo.dt.navy.mil/data/DM/Environmental_Data_Deep_Moor_2015.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	page, err := ioutil.ReadAll(res.Body)
-	res.Body.Close()
+	rdr := csv.NewReader(res.Body)
+	rdr.Comma = '\t'
+	rdr.TrimLeadingSpace = true
+	defer res.Body.Close()
+	rows, err := rdr.ReadAll()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	fmt.Printf("%s", page)
+	// Don't count the header row in len(rows)
+	fmt.Println("Total Records: ", len(rows)-1)
+	fmt.Println("Air Temp:\t", mean(rows, 1), median(rows, 1))
+	fmt.Println("Barometric:\t", mean(rows, 2), median(rows, 2))
+	fmt.Println("Wind Speed:\t", mean(rows, 7), median(rows, 7))
 }
 
 func mean(rows [][]string, idx int) float64 {
