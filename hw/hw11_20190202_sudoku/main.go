@@ -7,6 +7,7 @@ import (
 func main() {
 
 	// PART_1 ---> TEST finding solution from program
+	fmt.Println("START --> finding solution from slice")
 	gridFromSlice := make([][]string, 9)
 	gridFromSlice[0] = []string{".", ".", ".", "1", "4", ".", ".", "2", "."}
 	gridFromSlice[1] = []string{".", ".", "6", ".", ".", ".", ".", ".", "."}
@@ -28,6 +29,7 @@ func main() {
 
 
 	// PART_2 ---> TEST finding solution from file
+	fmt.Println("START --> finding solution from FILE")
 	gridFromFile := make([]string, 9)
 	gridFromFile = []string{
 		"3..6.....",
@@ -54,6 +56,7 @@ func main() {
 
 
 	// PART_3 ---> TEST finding solution from console
+	fmt.Println("START --> finding solution from CONSOLE")
 	gridFromConsole := getSolutionFromConsole()
 
 	fmt.Println(gridFromConsole)
